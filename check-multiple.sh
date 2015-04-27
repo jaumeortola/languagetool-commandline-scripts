@@ -29,14 +29,14 @@ fi
 if [ "$1" = "llibregeneral" ] ; then
     langcode=ca-ES
     disabledRules="-d MORFOLOGIK_RULE_CA_ES"
-    enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,EXIGEIX_PLURALS_S,PER_PER_A_INFINITIU"
+    enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,EXIGEIX_PLURALS_S,PER_PER_A_INFINITIU,PRIORITZAR_COMETES"
 fi
 
 #Llibre per a impremta - valencià
 if [ "$1" = "llibrevalencia" ] ; then
     langcode=ca-ES-valencia
     disabledRules="-d MORFOLOGIK_RULE_CA_ES,EVITA_DEMOSTRATIUS_EIXE"
-    enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION"
+    enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,PRIORITZAR_COMETES"
 fi
 
 #Memòries Softcatalà
