@@ -64,10 +64,11 @@ for file in plaintext/*-plain.txt
 do
     echo "Analitzant... $file"
     fbname=$(basename "$file" -plain.txt)
-    java -jar $lt_jar $lt_opt "plaintext/${fbname}-plain.txt" > "results/${fbname}-results.txt"
+    java -jar $lt_jar $lt_opt --api "plaintext/${fbname}-plain.txt" > "results/${fbname}-results.txt"
 done
 
 # Ordena i classifica els resultats
+exit
 
 for file in results/*-results.txt
 do
