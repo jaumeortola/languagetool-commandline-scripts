@@ -74,5 +74,6 @@ do
     echo "Arreglant resultats... $file"
     fbname=$(basename "$file" -results.txt)
     perl $tohtml < "results/${fbname}-results.txt" > "results/${fbname}-results.html"
+    sed -i 's/\t/ /g' "results/${fbname}-results.html"
     rm "results/${fbname}-results.txt"
 done
