@@ -16,11 +16,26 @@ def process_file ( ifile ):
          rulecounters[ruleId] += 1
       else:
          rulecounters[ruleId] = 1
+
+   # sorted list of rules
+   sortedrulelist = sorted(rulecounters, key=rulecounters.get, reverse=True);
+   for key in sortedrulelist:
+      print key, rulecounters[key]
+
+   # errors by frequency of the rule
+   errors = root.findall('error')
+   errors.sort(key=lambda x: sortedrulelist.index(x.get('ruleId')), reverse=False)
+   for error in errors:
+      print error.attrib
+
+'''
    for key in sorted(rulecounters, key=rulecounters.get, reverse=True):
       print key, rulecounters[key]
       for error in root.findall('error'):
          if error.get('ruleId') == key:
             print error.attrib
+'''
+
 
 def main(argv):
    inputfile = ''
