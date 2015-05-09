@@ -28,6 +28,11 @@ def process_file ( ifile ):
    for error in errors:
       print error.attrib
 
+   print "*** Unknown Words ***"
+   unknownWords = root.find('unknown_words').findall('word');
+   for word in unknownWords:
+      print word.text
+
 '''
    for key in sorted(rulecounters, key=rulecounters.get, reverse=True):
       print key, rulecounters[key]
