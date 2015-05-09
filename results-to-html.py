@@ -7,6 +7,7 @@ def process_file ( ifile ):
    import xml.etree.ElementTree as ET
    tree = ET.parse(ifile)
    root = tree.getroot()
+
    # count rules by ruleId
    rulecounters = dict()
    for error in root.findall('error'):
@@ -17,10 +18,9 @@ def process_file ( ifile ):
          rulecounters[ruleId] = 1
    for key in sorted(rulecounters, key=rulecounters.get, reverse=True):
       print key, rulecounters[key]
-
-#   for child in root:
-#      print child.tag, child.attrib
-   
+      for error in root.findall('error'):
+         if error.get('ruleId') == key:
+            print error.attrib
 
 def main(argv):
    inputfile = ''
