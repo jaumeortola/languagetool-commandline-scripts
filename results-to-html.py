@@ -2,6 +2,18 @@
 # -*- coding: utf-8 -*-
 import sys, getopt, operator, pystache
 
+def process_template(template, filename, ctx):
+    # Load template and process it.
+    template = open(template, 'r').read()
+    parsed = pystache.Renderer()
+    s = parsed.render(unicode(template, "utf-8"), ctx)
+
+    # Write output.
+    f = open(filename, 'w')
+    f.write(s.encode("utf-8"))
+    f.close()
+
+
 def process_file ( ifile ):
    # parxe xml
    import xml.etree.ElementTree as ET
@@ -32,6 +44,14 @@ def process_file ( ifile ):
    unknownWords = root.find('unknown_words').findall('word');
    for word in unknownWords:
       print word.text
+
+   ctx = {
+       # This is the list of projects to display for the user to select.
+       'filename': ifile,
+       'rulelist': sortedrulelist,
+       'errors': errors,
+   }
+   process_template("lt_results.mustache", ifile + "-lt.html", ctx)
 
 '''
    for key in sorted(rulecounters, key=rulecounters.get, reverse=True):
