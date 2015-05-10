@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys, getopt, operator
+import sys, getopt, operator, pystache
 
 def process_file ( ifile ):
    # parxe xml

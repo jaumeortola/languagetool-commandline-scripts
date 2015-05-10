@@ -1,51 +1,53 @@
-<html>
-<head>
-   <meta charset="UTF-8">
-   <style> 
-    .twocolumns {
-	-webkit-column-count: 2; /* Chrome, Safari, Opera */
-	    -moz-column-count: 2; /* Firefox */
-	    column-count: 2;
-   }
-</style>
-</head>
-
-<body>
-<h1>Fitxer analitzat: {{filename}}</h1>
-<a name="inici"></a>
-<h2>Paraules desconegudes</h2>
-<p></p>
-<a name="indexregles"></a>
-<h2>Regles ordenades per freqüència</h2>
-
-<div class="twocolumns">
-<table class="table">
-<tr><td><b>Codi de regla</b></td><td><b>Ocurrències</b></td></tr>
-
-
-    <tr><td><a href="#{{ruleId}}">{{ruleId}}</a></td><td style="text-align:right">{{rulecounters[ruleId]}}</td></tr>
-
-    <tr><td style="text-align:right">Total:&nbsp;</td><td style="text-align:right">{{totalmatches}}</td></tr>
-
-</table>
-</div>
-
-
-<h2>Errors trobats per regla</h2>
-
-
-<a name="{{ruleId}}"></a> {{menu}}
-<b>Regla: {{ruleId}}</b>
-<br/><br/>
-
-Missatge: {{message}}<br/>
-Suggeriments: {{suggestions}}<br/>
-if ..
-<a href="{{moreinfo}}">Més informació</a><br/>
-<pre>
-{{context}}
-</pre>
-
-
-</body>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Anàlisi LanguageTool</title>
+        <meta charset="UTF-8"/>
+        <style type="text/css"> 
+            .twocolumns {
+            -webkit-column-count: 2; /* Chrome, Safari, Opera */
+            -moz-column-count: 2; /* Firefox */
+            column-count: 2;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <h1>Fitxer analitzat: {{filename}}</h1>
+        <a id="inici"></a>
+        <h2>Paraules desconegudes</h2>
+        <p></p>
+        <a id="indexregles"></a>
+        <h2>Regles ordenades per freqüència</h2>
+        
+        <div class="twocolumns">
+            <table class="table">
+                <tr><td><b>Codi de regla</b></td><td><b>Ocurrències</b></td></tr>
+                
+                
+                <tr><td><a href="#{{ruleId}}">{{ruleId}}</a></td><td style="text-align:right">{{rulecounters[ruleId]}}</td></tr>
+                
+                <tr><td style="text-align:right">Total:</td><td style="text-align:right">{{totalmatches}}</td></tr>
+                
+            </table>
+        </div>
+        
+        
+        <h2>Errors trobats per regla</h2>
+        
+        
+        <a id="#{{ruleId}}"></a> {{menu}}
+        <b>Regla: {{ruleId}}</b>
+        <br/><br/>
+        
+        Missatge: {{message}}<br/>
+        Suggeriments: {{suggestions}}<br/>
+        if exists...
+        <a href="{{moreinfo}}">Més informació</a><br/>
+        <pre>
+            {{context}}
+        </pre>
+        
+        
+    </body>
 </html>
