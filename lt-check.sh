@@ -7,11 +7,7 @@ tohtml=../results-to-html.pl
 lt_jar=~/lt/languagetool-commandline.jar
 #lt_jar=/usr/share/lt/languagetool-commandline.jar
 
-mkdir -p plaintext
 mkdir -p results
-
-rm plaintext/*
-rm results/*
 
 #Opcions de revisió
 langcode=ca-ES
@@ -53,6 +49,7 @@ for filename in *
 do
     if [ "${filename: -3}" == ".po" ]
     then
+	echo "Filtrant fitxer .po ${filename}"
 	msgattrib --no-obsolete --no-fuzzy --translated "${filename}" > "${filename}-filtrat.po"
 	po2txt "${filename}-filtrat.po" > "${filename}.html"
 	sed -i 's/[_&]//g' "${filename}.html"
