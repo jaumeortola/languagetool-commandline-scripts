@@ -3,7 +3,7 @@
 #Directories
 tikajar=/usr/share/tika/tika-app-1.7.jar
 #tohtml=/usr/share/tika/results-to-html.pl
-tohtml=./results-to-html.pl
+tohtml=../results-to-html.pl
 lt_jar=~/lt/languagetool-commandline.jar
 #lt_jar=/usr/share/lt/languagetool-commandline.jar
 
@@ -46,35 +46,31 @@ if [ "$1" = "softcatala" ] ; then
     enabledRules="-e EXIGEIX_PLURALS_S"
 fi
 
-
 lt_opt="-u -b -c utf-8 -l $langcode $disabledRules $enabledRules"
 
-# Converteix a text pla
-
-for file in original/*
+cd original
+for filename in *
 do
-    echo "Convertint... $file"
-    fbname=$(basename "$file")
-    java -jar $tikajar -t "original/${fbname}" > "plaintext/${fbname}-plain.txt"
+    if [ "${filename: -3}" == ".po" ]
+    then
+	msgattrib --no-obsolete --no-fuzzy --translated "${filename}" > "${filename}-filtrat.po"
+	po2txt "${filename}-filtrat.po" > "${filename}.html"
+	sed -i 's/[_&]//g' "${filename}.html"
+	sed -i 's/\\[rtn]/ /g' "${filename}.html"
+	rm "${filename}-filtrat.po"
+	filename="${filename}.html"
+    fi
+
+    echo "Convertint a text pla... $filename"
+    java -jar $tikajar -t "${filename}" > "${filename}-plain.txt"
+    echo "Analitzant amb LanguageTool.. $filename"
+    java -jar $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.txt"
+    echo "Arreglant resultats... $filename"
+    perl $tohtml < "${filename}-lt.txt" > "../results/${filename}-lt.html"
+    sed -i 's/\t/ /g' "../results/${filename}-lt.html"
+
+    rm "${filename}-plain.txt"
+    rm "${filename}-lt.txt"
 done
-
-# Analitza amb LanguatgeTool
-
-for file in plaintext/*-plain.txt
-do
-    echo "Analitzant... $file"
-    fbname=$(basename "$file" -plain.txt)
-    java -jar $lt_jar $lt_opt --api "plaintext/${fbname}-plain.txt" > "results/${fbname}-results.txt"
-done
-
-# Ordena i classifica els resultats
-exit
-
-for file in results/*-results.txt
-do
-    echo "Arreglant resultats... $file"
-    fbname=$(basename "$file" -results.txt)
-    perl $tohtml < "results/${fbname}-results.txt" > "results/${fbname}-results.html"
-    sed -i 's/\t/ /g' "results/${fbname}-results.html"
-    rm "results/${fbname}-results.txt"
-done
+rm *.po.html
+cd .. 
