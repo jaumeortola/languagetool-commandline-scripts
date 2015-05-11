@@ -61,9 +61,9 @@ do
     fi
 
     echo "Convertint a text pla... $filename"
-    java -jar $tikajar -t "${filename}" > "${filename}-plain.txt"
+    java -jar -Dfile.encoding=UTF-8 $tikajar -t "${filename}" > "${filename}-plain.txt"
     echo "Analitzant amb LanguageTool.. $filename"
-    java -jar $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.xml"
+    java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.xml"
 
     echo "Arreglant resultats... $filename"
     python $tohtml -i "${filename}-lt.xml" -o $results_dir/"${fbname}-lt.html"
