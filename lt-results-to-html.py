@@ -16,7 +16,17 @@ def process_template(template, filename, ctx):
 class rule_match(object):
    def __init__(self, error):
       self.msg = error.attrib['msg']
-      self.replacements = error.attrib['replacements'].replace("#", "; ")
+      replacements_array = error.attrib['replacements'].split("#")
+      n = 0;
+      replacements_str = ""
+      for r in replacements_array:
+         replacements_str += r + "; "
+         n += 1
+         if n > 9:
+            break
+      if len(replacements_str)>1:
+          replacements_str = replacements_str[0:len(replacements_str)-2]
+      self.replacements = replacements_str
       ctx = error.attrib['context']
       a = int(error.attrib['contextoffset'])
       b = a + int(error.attrib['errorlength'])
@@ -84,7 +94,6 @@ def process_file ( ifile ):
 
 def main(argv):
    inputfile = ''
-   outputfile = ''
    try:
       opts, args = getopt.getopt(argv,"hi:",["ifile="])
    except getopt.GetoptError:
