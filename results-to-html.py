@@ -13,6 +13,21 @@ def process_template(template, filename, ctx):
     f.write(s.encode("utf-8"))
     f.close()
 
+class rule_match(object):
+   def __init__(self, error):
+      self.msg = error.attrib['msg']
+      self.replacements = error.attrib['replacements'].replace("#", "; ")
+      self.context = error.attrib['context']
+      if hasattr(error, 'url'):
+         self.url = error.attrib['url']
+
+class rule(object):
+   def __init__(self, ruleId):
+      self.ruleId = ruleId
+      self.rule_matches = []
+      self.count = 1
+   def increment(self):
+      self.count += 1
 
 def process_file ( ifile ):
    # parxe xml
@@ -21,46 +36,42 @@ def process_file ( ifile ):
    root = tree.getroot()
 
    # count rules by ruleId
-   rulecounters = dict()
+   rulelist = []
+   totalmatches = 0
    for error in root.findall('error'):
       ruleId = error.get('ruleId')
-      if ruleId in rulecounters:
-         rulecounters[ruleId] += 1
+      for x in rulelist:
+         if x.ruleId == ruleId:
+            x.increment()
+            totalmatches += 1
+            break
       else:
-         rulecounters[ruleId] = 1
+         rulelist.append(rule(ruleId))
 
-   # sorted list of rules
-   sortedrulelist = sorted(rulecounters, key=rulecounters.get, reverse=True);
-   for key in sortedrulelist:
-      print key, rulecounters[key]
+   # sort list of rules
+   rulelist.sort(key=rulelist.count, reverse=True);
 
-   # errors by frequency of the rule
+   # matches per rule
    errors = root.findall('error')
-   errors.sort(key=lambda x: sortedrulelist.index(x.get('ruleId')), reverse=False)
    for error in errors:
-      print error.attrib
+      for x in rulelist:
+         if x.ruleId == error.attrib['ruleId']:
+            x.rule_matches.append(rule_match(error)) 
+            break
 
-   print "*** Unknown Words ***"
-   unknownWords = root.find('unknown_words').findall('word');
-   for word in unknownWords:
-      print word.text
+   # Unknown words
+   unknownwords = []
+   for word in  root.find('unknown_words').findall('word'):
+      unknownwords.append(word.text)
 
    ctx = {
-       # This is the list of projects to display for the user to select.
        'filename': ifile,
-       'rulelist': sortedrulelist,
-       'errors': errors,
+       'totalmatches': totalmatches,
+       'rulelist': rulelist,
+       'unknownwords': unknownwords,
    }
+
    process_template("lt_results.mustache", ifile + "-lt.html", ctx)
-
-'''
-   for key in sorted(rulecounters, key=rulecounters.get, reverse=True):
-      print key, rulecounters[key]
-      for error in root.findall('error'):
-         if error.get('ruleId') == key:
-            print error.attrib
-'''
-
 
 def main(argv):
    inputfile = ''

@@ -16,7 +16,9 @@
         <h1>Fitxer analitzat: {{filename}}</h1>
         <a id="inici"></a>
         <h2>Paraules desconegudes</h2>
-        <p></p>
+        <p>
+        {{#unknownwords}}{{.}}, {{/unknownwords}}
+        </p>
         <a id="indexregles"></a>
         <h2>Regles ordenades per freqüència</h2>
         
@@ -24,7 +26,7 @@
             <table class="table">
                 <tr><td><b>Codi de regla</b></td><td><b>Ocurrències</b></td></tr>
                {{#rulelist}}
-                <tr><td><a href="#{{.}}">{{.}}</a></td><td style="text-align:right">{{.}}</td></tr>
+                <tr><td><a href="#{{ruleId}}">{{ruleId}}</a></td><td style="text-align:right">{{count}}</td></tr>
                 {{/rulelist}}                
                 <tr><td style="text-align:right">Total:</td><td style="text-align:right">{{totalmatches}}</td></tr>
                 
@@ -34,19 +36,19 @@
         
         <h2>Errors trobats per regla</h2>
         
-        
+        {{#rulelist}}
         <a id="#{{ruleId}}"></a> {{menu}}
         <b>Regla: {{ruleId}}</b>
         <br/><br/>
-        {{#errors}}
-        Missatge: {{self.msg}}<br/>
-        Suggeriments: {{self.replacements}}<br/>
-        if exists...
-        <a href="{{self.url}}">Més informació</a><br/>
-        <pre>
-            {{self.context}}
-        </pre>
-        {{/errors}}
+        {{#rule_matches}}
+        Missatge: {{msg}}<br/>
+        Suggeriments: {{replacements}}<br/>
+        {{#url}}
+        <a href="{{url}}">Més informació</a><br/>
+        {{/url}}
+        <pre>{{context}}</pre>
+        {{/rule_matches}}
+        {{/rulelist}}
         
         
     </body>
