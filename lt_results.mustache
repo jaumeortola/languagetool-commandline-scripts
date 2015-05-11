@@ -33,15 +33,16 @@
         </style>
     </head>
     <body>
-        <h1>Fitxer analitzat: {{filename}}</h1>
         <a id="inici"></a>
+        <h1>Fitxer analitzat: {{filename}}</h1>
+	<hr/>Vés a: [<a href="#inici">Inici</a>] [<a href="#indexregles">Índex de regles</a>]<hr/>
         <h2>Paraules desconegudes</h2>
         <p>
         {{#unknownwords}}{{.}}, {{/unknownwords}}
         </p>
         <a id="indexregles"></a>
+	<hr/>Vés a: [<a href="#inici">Inici</a>] [<a href="#indexregles">Índex de regles</a>]<hr/>
         <h2>Regles ordenades per freqüència</h2>
-        
         <div class="twocolumns">
             <table class="table">
                 <tr><td><b>Codi de regla</b></td><td><b>Ocurrències</b></td></tr>
@@ -50,11 +51,11 @@
             </table>
         </div>
         
-        
         <h2>Errors trobats per regla</h2>
         
         {{#rulelist}}
-        <a id="#{{ruleId}}"></a> {{menu}}
+        <a id="{{ruleId}}"></a>
+	<hr/>Vés a: [<a href="#inici">Inici</a>] [<a href="#indexregles">Índex de regles</a>]<hr/>
         <b>Regla: {{ruleId}}</b>
         <br/><br/>
         {{#rule_matches}}
