@@ -57,10 +57,10 @@
         <b>Regla: {{ruleId}}</b>
         <br/><br/>
         {{#rule_matches}}
-        <b>Missatge:</b> {{msg}}<br/>
+        <hr/><b>Missatge:</b> {{msg}}<br/>
         {{#replacements}}<b>Suggeriments:</b> {{replacements}}<br/>{{/replacements}}
         {{#url}}<a href="{{url}}">Més informació</a><br/>{{/url}}
-        <pre>{{{context}}}</pre>
+        <p>{{{context}}}</p>
         {{/rule_matches}}
         {{/rulelist}}
     </body>

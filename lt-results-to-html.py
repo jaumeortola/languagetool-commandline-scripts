@@ -20,12 +20,13 @@ class rule_match(object):
       n = 0;
       replacements_str = ""
       for r in replacements_array:
-         replacements_str += r + "; "
-         n += 1
-         if n > 9:
-            break
-      if len(replacements_str)>1:
-          replacements_str = replacements_str[0:len(replacements_str)-2]
+         if r:
+            if n > 0:
+               replacements_str += "; "
+            replacements_str += r 
+            n += 1
+            if n > 9:
+               break
       self.replacements = replacements_str
       ctx = error.attrib['context']
       a = int(error.attrib['contextoffset'])
@@ -48,7 +49,7 @@ class rule(object):
    def increment(self):
       self.count += 1
 
-def process_file ( ifile ):
+def process_file ( ifile, ofile ):
    # parxe xml
    import xml.etree.ElementTree as ET
    tree = ET.parse(ifile)
@@ -90,22 +91,25 @@ def process_file ( ifile ):
        'unknownwords': unknownwords,
    }
 
-   process_template("lt_results.mustache", ifile + "-lt.html", ctx)
+   process_template("lt_results.mustache", ofile, ctx)
 
 def main(argv):
    inputfile = ''
    try:
-      opts, args = getopt.getopt(argv,"hi:",["ifile="])
+      opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
    except getopt.GetoptError:
       print 'Use: lt-results-to-html.py -i <inputfile>'
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
-         print 'Use: lt-results-to-html.py -i <inputfile>'
+         print 'Use: lt-results-to-html.py -i <inputfile> -o <outputfile>'
          sys.exit()
       elif opt in ("-i", "--ifile"):
          inputfile = arg
-   process_file( inputfile )
+      elif opt in ("-o", "--ofile"):
+         outputfile = arg
+
+   process_file( inputfile, outputfile )
 
 if __name__ == "__main__":
    main(sys.argv[1:])

@@ -3,8 +3,10 @@
 #Directories
 tikajar=/usr/share/tika/tika-app-1.7.jar
 #tohtml=/usr/share/tika/results-to-html.pl
-tohtml=../results-to-html.pl
+tohtml=lt-results-to-html.py
 lt_jar=~/lt/languagetool-commandline.jar
+origin_dir=original
+results_dir=results
 #lt_jar=/usr/share/lt/languagetool-commandline.jar
 
 mkdir -p results
@@ -42,11 +44,11 @@ if [ "$1" = "softcatala" ] ; then
     enabledRules="-e EXIGEIX_PLURALS_S"
 fi
 
-lt_opt="-u -b -c utf-8 -l $langcode $disabledRules $enabledRules"
+lt_opt="-u -b -c utf-8 -l $langcode $disabledRules $enabledRules --api"
 
-cd original
-for filename in *
+for filename in $origin_dir/*
 do
+    fbname=$(basename "$filename")
     if [ "${filename: -3}" == ".po" ]
     then
 	echo "Filtrant fitxer .po ${filename}"
@@ -61,13 +63,12 @@ do
     echo "Convertint a text pla... $filename"
     java -jar $tikajar -t "${filename}" > "${filename}-plain.txt"
     echo "Analitzant amb LanguageTool.. $filename"
-    java -jar $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.txt"
+    java -jar $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.xml"
+
     echo "Arreglant resultats... $filename"
-    perl $tohtml < "${filename}-lt.txt" > "../results/${filename}-lt.html"
-    sed -i 's/\t/ /g' "../results/${filename}-lt.html"
+    python $tohtml -i "${filename}-lt.xml" -o $results_dir/"${fbname}-lt.html"
 
     rm "${filename}-plain.txt"
-    rm "${filename}-lt.txt"
+    rm "${filename}-lt.xml"
+    rm "${filename}.html"
 done
-rm *.po.html
-cd .. 
