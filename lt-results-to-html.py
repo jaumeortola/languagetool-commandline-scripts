@@ -17,7 +17,16 @@ class rule_match(object):
    def __init__(self, error):
       self.msg = error.attrib['msg']
       self.replacements = error.attrib['replacements'].replace("#", "; ")
-      self.context = error.attrib['context']
+      ctx = error.attrib['context']
+      a = int(error.attrib['contextoffset'])
+      b = a + int(error.attrib['errorlength'])
+      ctxlen = len(ctx)
+      spanclass = "hiddenGrammarError"
+      if error.attrib['locqualityissuetype'] == "misspelling":
+         spanclass = "hiddenSpellError"
+      if (error.attrib['locqualityissuetype'] == "style") or (error.attrib['locqualityissuetype'] == "locale-violation"):
+         spanclass = "hiddenGreenError"
+      self.context = ctx[0:a]+"<span class=\""+spanclass+"\">"+ctx[a:b]+"</span>"+ctx[b:ctxlen]
       if hasattr(error, 'url'):
          self.url = error.attrib['url']
 
@@ -59,9 +68,9 @@ def process_file ( ifile ):
             x.rule_matches.append(rule_match(error)) 
             break
 
-   # Unknown words
+   # unknown words
    unknownwords = []
-   for word in  root.find('unknown_words').findall('word'):
+   for word in root.find('unknown_words').findall('word'):
       unknownwords.append(word.text)
 
    ctx = {
