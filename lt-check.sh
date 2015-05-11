@@ -22,21 +22,18 @@ if [ "$1" = "uvalencia" ] ; then
     disabledRules="-d EXIGEIX_ACCENTUACIO_VALENCIANA"
     enabledRules="-e EXIGEIX_ACCENTUACIO_GENERAL,CA_UNPAIRED_QUESTION,GUIONET_GUIO,PUNTS_SUSPENSIUS,EXIGEIX_PLURALS_S,EVITA_FUTUR_OBLIGACIO,EVITA_DEMOSTRATIUS_EIXE"
 fi
-
 #Llibre per a impremta - català general
 if [ "$1" = "llibregeneral" ] ; then
     langcode=ca-ES
     disabledRules="-d MORFOLOGIK_RULE_CA_ES"
     enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,EXIGEIX_PLURALS_S,PER_PER_A_INFINITIU,PRIORITZAR_COMETES"
 fi
-
 #Llibre per a impremta - valencià
 if [ "$1" = "llibrevalencia" ] ; then
     langcode=ca-ES-valencia
     disabledRules="-d MORFOLOGIK_RULE_CA_ES,EVITA_DEMOSTRATIUS_EIXE"
     enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,PRIORITZAR_COMETES"
 fi
-
 #Memòries Softcatalà
 if [ "$1" = "softcatala" ] ; then
     langcode=ca-ES
