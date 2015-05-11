@@ -91,7 +91,7 @@ def process_file ( ifile, ofile ):
        'unknownwords': unknownwords,
    }
 
-   process_template("lt_results.mustache", ofile, ctx)
+   process_template("lt-results.mustache", ofile, ctx)
 
 def main(argv):
    inputfile = ''
