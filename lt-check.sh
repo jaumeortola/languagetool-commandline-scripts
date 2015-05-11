@@ -20,7 +20,7 @@ enabledRules=""
 if [ "$1" = "uvalencia" ] ; then
     langcode=ca-ES-valencia
     disabledRules="-d EXIGEIX_ACCENTUACIO_VALENCIANA"
-    enabledRules="-e EXIGEIX_ACCENTUACIO_GENERAL,CA_UNPAIRED_QUESTION,GUIONET_GUIO,PUNTS_SUSPENSIUS,EXIGEIX_PLURALS_S,EVITA_FUTUR_OBLIGACIO,EVITA_DEMOSTRATIUS_EIXE"
+    enabledRules="-e EXIGEIX_ACCENTUACIO_GENERAL,GUIONET_GUIO,PUNTS_SUSPENSIUS,EXIGEIX_PLURALS_S,EVITA_FUTUR_OBLIGACIO,EVITA_DEMOSTRATIUS_EIXE,EVITA_INTERROGACIO_INICIAL"
 fi
 #Llibre per a impremta - català general
 if [ "$1" = "llibregeneral" ] ; then
@@ -37,7 +37,7 @@ fi
 #Memòries Softcatalà
 if [ "$1" = "softcatala" ] ; then
     langcode=ca-ES
-    disabledRules="-d MORFOLOGIK_RULE_CA_ES,WHITESPACE_RULE"
+    disabledRules="-d MORFOLOGIK_RULE_CA_ES,WHITESPACE_RULE,UPPERCASE_SENTENCE_START,CAMI_DE"
     enabledRules="-e EXIGEIX_PLURALS_S"
 fi
 
