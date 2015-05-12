@@ -4,8 +4,8 @@ import sys, getopt, operator, pystache, os.path
 
 def process_template(template, filename, ctx):
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-    # Load template and process it.
 
+    # Load template and process it.
     template = open(os.path.join(__location__, template), 'r').read()
     parsed = pystache.Renderer()
     s = parsed.render(unicode(template, "utf-8"), ctx)
@@ -40,8 +40,10 @@ class rule_match(object):
       if (error.attrib['locqualityissuetype'] == "style") or (error.attrib['locqualityissuetype'] == "locale-violation"):
          spanclass = "hiddenGreenError"
       self.context = ctx[0:a]+"<span class=\""+spanclass+"\">"+ctx[a:b]+"</span>"+ctx[b:ctxlen]
-      if hasattr(error, 'url'):
+      try:
          self.url = error.attrib['url']
+      except KeyError:
+         self.url = ""
 
 class rule(object):
    def __init__(self, ruleId):
