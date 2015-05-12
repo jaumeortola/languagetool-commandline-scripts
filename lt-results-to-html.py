@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys, getopt, operator, pystache
+import sys, getopt, operator, pystache, os.path
 
 def process_template(template, filename, ctx):
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     # Load template and process it.
-    template = open(template, 'r').read()
+
+    template = open(os.path.join(__location__, template), 'r').read()
     parsed = pystache.Renderer()
     s = parsed.render(unicode(template, "utf-8"), ctx)
 
