@@ -73,7 +73,7 @@ def process_file ( ifile, ofile ):
          rulelist.append(rule(ruleId))
 
    # sort list of rules
-   rulelist.sort(key=rulelist.count, reverse=True);
+   rulelist.sort(key=lambda x: x.count, reverse=True);
 
    # matches per rule
    errors = root.findall('error')
