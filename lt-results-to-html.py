@@ -85,8 +85,11 @@ def process_file ( ifile, ofile ):
 
    # unknown words
    unknownwords = []
-   for word in root.find('unknown_words').findall('word'):
-      unknownwords.append(word.text)
+   try:
+      for word in root.find('unknown_words').findall('word'):
+         unknownwords.append(word.text)
+   except AttributeError:
+      pass
 
    ctx = {
        'filename': ifile,
