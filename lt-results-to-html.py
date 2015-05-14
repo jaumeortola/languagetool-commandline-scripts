@@ -104,7 +104,7 @@ def main(argv):
    try:
       opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
    except getopt.GetoptError:
-      print 'Use: lt-results-to-html.py -i <inputfile>'
+      print 'Use: lt-results-to-html.py -i <inputfile> -o <outputfile>'
       sys.exit(2)
    for opt, arg in opts:
       if opt == '-h':
