@@ -61,9 +61,8 @@ def process_file ( ifile, ofile ):
 
    # count rules by ruleId
    rulelist = []
-   totalmatches = 0
-   for error in root.findall('error'):
-      totalmatches += 1
+   errors = root.findall('error')
+   for error in errors:
       ruleId = error.get('ruleId')
       for x in rulelist:
          if x.ruleId == ruleId:
@@ -76,7 +75,6 @@ def process_file ( ifile, ofile ):
    rulelist.sort(key=lambda x: x.count, reverse=True);
 
    # matches per rule
-   errors = root.findall('error')
    for error in errors:
       for x in rulelist:
          if x.ruleId == error.attrib['ruleId']:
@@ -93,7 +91,7 @@ def process_file ( ifile, ofile ):
 
    ctx = {
        'filename': ifile,
-       'totalmatches': totalmatches,
+       'totalmatches': len(errors),
        'rulelist': rulelist,
        'unknownwords': unknownwords,
        'hasunknownwords': len(unknownwords),
