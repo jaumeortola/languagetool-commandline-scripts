@@ -63,11 +63,11 @@ def process_file ( ifile, ofile ):
    rulelist = []
    totalmatches = 0
    for error in root.findall('error'):
+      totalmatches += 1
       ruleId = error.get('ruleId')
       for x in rulelist:
          if x.ruleId == ruleId:
             x.increment()
-            totalmatches += 1
             break
       else:
          rulelist.append(rule(ruleId))
@@ -96,6 +96,7 @@ def process_file ( ifile, ofile ):
        'totalmatches': totalmatches,
        'rulelist': rulelist,
        'unknownwords': unknownwords,
+       'hasunknownwords': len(unknownwords),
    }
 
    process_template("lt-results.mustache", ofile, ctx)

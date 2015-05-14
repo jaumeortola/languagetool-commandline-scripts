@@ -1,45 +1,9 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>Anàlisi LanguageTool</title>
-        <meta charset="UTF-8"/>
-        <style type="text/css"> 
-            .twocolumns {
-            -webkit-column-count: 2; /* Chrome, Safari, Opera */
-            -moz-column-count: 2; /* Firefox */
-            column-count: 2;
-            }
-            .hiddenSpellError {
-	    padding-bottom: 2px;
-	    background-image: url("images/squiggle_red.png");
-	    background-repeat: repeat-x;
-	    background-position: left bottom;
-	    cursor: default;
-	    }
-	    .hiddenGrammarError {
-	    padding-bottom: 2px;
-	    background-image: url("images/squiggle_blue.png");
-	    background-repeat: repeat-x;
-	    background-position: left bottom;
-	    cursor: default;
-	    }
-	    .hiddenGreenError {
-	    padding-bottom: 2px;
-	    background-image: url("images/squiggle_green.png");
-	    background-repeat: repeat-x;
-	    background-position: left bottom;
-	    cursor: default;
-	    }
-        </style>
-    </head>
-    <body>
         <a id="inici"></a>
-        <h1>Fitxer analitzat: {{filename}}</h1>
-	<hr/>Vés a: [<a href="#inici">Inici</a>] [<a href="#indexregles">Índex de regles</a>]<hr/>
+	{{#hasunknownwords}}
+        <hr/>Vés a: [<a href="#inici">Inici</a>] [<a href="#indexregles">Índex de regles</a>]<hr/>
         <h2>Paraules desconegudes</h2>
-        <p>
-        {{#unknownwords}}{{.}}, {{/unknownwords}}
-        </p>
+        <p>{{#unknownwords}}{{.}}, {{/unknownwords}}</p>
+        {{/hasunknownwords}}
         <a id="indexregles"></a>
 	<hr/>Vés a: [<a href="#inici">Inici</a>] [<a href="#indexregles">Índex de regles</a>]<hr/>
         <h2>Regles ordenades per freqüència</h2>
@@ -63,5 +27,3 @@
         <p>{{{context}}}</p>
         {{/rule_matches}}
         {{/rulelist}}
-    </body>
-</html>
