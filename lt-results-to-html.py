@@ -88,6 +88,7 @@ def process_file ( ifile, ofile ):
          unknownwords.append(word.text)
    except AttributeError:
       pass
+   unknownwords.sort()
 
    ctx = {
        'filename': ifile,
