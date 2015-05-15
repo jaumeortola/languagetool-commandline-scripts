@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys, getopt, operator, pystache, os.path
+import sys, getopt, operator, pystache, os.path, uuid
 
 def process_template(template, filename, ctx):
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -95,6 +95,7 @@ def process_file ( ifile, ofile ):
        'rulelist': rulelist,
        'unknownwords': unknownwords,
        'hasunknownwords': len(unknownwords),
+       'uuid': uuid.uuid4(),
    }
 
    process_template("lt-results.mustache", ofile, ctx)
