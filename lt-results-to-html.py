@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys, getopt, operator, pystache, os.path, uuid
 
+
 def process_template(template, filename, ctx):
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
@@ -16,7 +17,7 @@ def process_template(template, filename, ctx):
     f.close()
 
 class rule_match(object):
-   def __init__(self, error):
+   def __init__(self, error, unknownwords):
       self.msg = error.attrib['msg']
       replacements_array = error.attrib['replacements'].split("#")
       n = 0;
@@ -44,6 +45,10 @@ class rule_match(object):
          self.url = error.attrib['url']
       except KeyError:
          self.url = ""
+      # get unknown words from spelling rule
+      if error.attrib['ruleId'] == "MORFOLOGIK_RULE_CA_ES":
+         if ctx[a:b] not in unknownwords:
+            unknownwords.append(ctx[a:b])
 
 class rule(object):
    def __init__(self, ruleId):
@@ -53,42 +58,46 @@ class rule(object):
    def increment(self):
       self.count += 1
 
+def getRuleById(rulelist, ruleId):
+   for x in rulelist:
+      if x.ruleId == ruleId:
+         return x
+         break
+
 def process_file ( ifile, ofile ):
    # parxe xml
    import xml.etree.ElementTree as ET
    tree = ET.parse(ifile)
    root = tree.getroot()
 
-   # count rules by ruleId
+   # count rules by ruleId & matches per rule
    rulelist = []
+   unknownwords = []
    errors = root.findall('error')
    for error in errors:
-      ruleId = error.get('ruleId')
-      for x in rulelist:
-         if x.ruleId == ruleId:
-            x.increment()
-            break
+      ruleId = error.attrib['ruleId'] #.get('ruleId')
+      r = getRuleById(rulelist, ruleId)
+      if r != None:
+         r.increment()
       else:
-         rulelist.append(rule(ruleId))
+         r = rule(ruleId)
+         rulelist.append(r)
+      r.rule_matches.append(rule_match(error, unknownwords)) 
 
    # sort list of rules
    rulelist.sort(key=lambda x: x.count, reverse=True);
 
-   # matches per rule
-   for error in errors:
-      for x in rulelist:
-         if x.ruleId == error.attrib['ruleId']:
-            x.rule_matches.append(rule_match(error)) 
-            break
-
-   # unknown words
-   unknownwords = []
-   try:
-      for word in root.find('unknown_words').findall('word'):
-         unknownwords.append(word.text)
-   except AttributeError:
-      pass
+   # unknown words from xml
+   #try:
+   #   for word in root.find('unknown_words').findall('word'):
+   #      unknownwords.append(word.text)
+   #except AttributeError:
+   #   pass
    unknownwords.sort()
+
+   r = getRuleById(rulelist, "MORFOLOGIK_RULE_CA_ES")
+   if len(r.rule_matches)>20:
+      rulelist.remove(r)
 
    ctx = {
        'filename': ifile,
