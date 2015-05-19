@@ -17,7 +17,7 @@ def process_template(template, filename, ctx):
     f.close()
 
 class rule_match(object):
-   def __init__(self, error, unknownwords):
+   def __init__(self, error):
       self.msg = error.attrib['msg']
       replacements_array = error.attrib['replacements'].split("#")
       n = 0;
@@ -45,16 +45,13 @@ class rule_match(object):
          self.url = error.attrib['url']
       except KeyError:
          self.url = ""
-      # get unknown words from spelling rule
-      if error.attrib['ruleId'] == "MORFOLOGIK_RULE_CA_ES":
-         if ctx[a:b] not in unknownwords:
-            unknownwords.append(ctx[a:b])
 
 class rule(object):
    def __init__(self, ruleId):
       self.ruleId = ruleId
       self.rule_matches = []
       self.count = 1
+      self.truncated = 0
    def increment(self):
       self.count += 1
 
@@ -75,14 +72,24 @@ def process_file ( ifile, ofile ):
    unknownwords = []
    errors = root.findall('error')
    for error in errors:
-      ruleId = error.attrib['ruleId'] #.get('ruleId')
+      ruleId = error.attrib['ruleId']
       r = getRuleById(rulelist, ruleId)
       if r != None:
          r.increment()
       else:
          r = rule(ruleId)
          rulelist.append(r)
-      r.rule_matches.append(rule_match(error, unknownwords)) 
+      if (r.count > 100):
+         r.truncated = 1
+      else:
+         r.rule_matches.append(rule_match(error))
+      # get unknown words from spelling rule
+      if ruleId == "MORFOLOGIK_RULE_CA_ES":
+         a = int(error.attrib['contextoffset'])
+         b = a + int(error.attrib['errorlength'])
+         wrongword = error.attrib['context'][a:b]
+         if wrongword not in unknownwords:
+            unknownwords.append(wrongword)
 
    # sort list of rules
    rulelist.sort(key=lambda x: x.count, reverse=True);
@@ -94,10 +101,6 @@ def process_file ( ifile, ofile ):
    #except AttributeError:
    #   pass
    unknownwords.sort()
-
-   r = getRuleById(rulelist, "MORFOLOGIK_RULE_CA_ES")
-   if len(r.rule_matches)>20:
-      rulelist.remove(r)
 
    ctx = {
        'filename': ifile,
