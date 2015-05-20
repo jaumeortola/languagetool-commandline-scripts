@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys, getopt, operator, pystache, os.path, uuid
+import sys, getopt, operator, pystache, os.path, uuid, cgi
 
 
 def process_template(template, filename, ctx):
@@ -42,7 +42,7 @@ class rule_match(object):
          spanclass = "hiddenGreenError"
       self.context_before = ctx[0:a]
       self.context_spanclass = spanclass
-      self.context_error = ctx[a:b]
+      self.context_error = cgi.escape(ctx[a:b]).replace(" ","&nbsp;")
       self.context_after = ctx[b:ctxlen]
       try:
          self.url = error.attrib['url']
