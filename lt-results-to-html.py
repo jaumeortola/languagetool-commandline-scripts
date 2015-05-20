@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys, getopt, operator, pystache, os.path, uuid, cgi
+import sys, getopt, operator, pystache, os.path, uuid, cgi, re, hunspell
 
 
 def process_template(template, filename, ctx):
@@ -64,6 +64,20 @@ def getRuleById(rulelist, ruleId):
          return x
          break
 
+_digits = re.compile('\d')
+def contains_digits(d):
+    return bool(_digits.search(d))
+
+_noletter = re.compile(ur'[^a-zA-ZûêàéèíòóúïüäöîâÄÖÀÈÉÍÒÓÚÏÜÎÂçÇñÑ·]', re.UNICODE)
+def contains_symbols(d):
+    return bool(_noletter.search(d))
+
+def is_firstupper(s):
+   return (s[0] == s[0].upper() and s[1:] == s[1:].lower())
+
+def is_camel(s):
+    return (s != s.lower() and s != s.upper() and not is_firstupper(s))
+
 def process_file ( ifile, ofile ):
    # parxe xml
    import xml.etree.ElementTree as ET
@@ -105,12 +119,62 @@ def process_file ( ifile, ofile ):
    #   pass
    unknownwords.sort()
 
+   hobj = hunspell.HunSpell('/usr/share/hunspell/en_US.dic', '/usr/share/hunspell/en_US.aff')
+   uw_oneletter = []
+   uw_digit = []
+   uw_symbol = []
+   uw_allupper = []
+   uw_camel = []
+   uw_english = []
+   uw_firstupper = []
+   uw_rest = []
+   for uw in unknownwords:
+      if contains_symbols(uw):
+         if uw not in uw_symbol:
+            uw_symbol.append(uw)
+      elif len(uw)==1:
+         if uw not in uw_oneletter:
+            uw_oneletter.append(uw)
+      elif hobj.spell(uw):
+         if uw not in uw_english:
+            uw_english.append(uw)
+      elif contains_digits(uw):
+         if uw not in uw_digit:
+            uw_digit.append(uw)
+      elif uw == uw.upper():
+         if uw not in uw_allupper:
+            uw_allupper.append(uw)
+      elif is_camel(uw):
+         if uw not in uw_camel:
+            uw_camel.append(uw)
+      elif is_firstupper(uw):
+         if uw not in uw_firstupper:
+            uw_firstupper.append(uw)
+      elif uw not in uw_rest:
+         uw_rest.append(uw)
+
    ctx = {
        'filename': ifile,
        'totalmatches': len(errors),
        'rulelist': rulelist,
        'unknownwords': unknownwords,
        'hasunknownwords': len(unknownwords),
+       'uw_oneletter': uw_oneletter,
+       'uw_digit': uw_digit,
+       'uw_symbol': uw_symbol,
+       'uw_allupper': uw_allupper,
+       'uw_camel': uw_camel,
+       'uw_english': uw_english,
+       'uw_firstupper': uw_firstupper,
+       'uw_rest': uw_rest,
+       'has_uw_oneletter': len(uw_oneletter),
+       'has_uw_digit': len(uw_digit),
+       'has_uw_symbol': len(uw_symbol),
+       'has_uw_allupper': len(uw_allupper),
+       'has_uw_camel': len(uw_camel),
+       'has_uw_english': len(uw_english),
+       'has_uw_firstupper': len(uw_firstupper),
+       'has_uw_rest': len(uw_rest),
        'uuid': uuid.uuid4(),
    }
 

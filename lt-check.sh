@@ -63,9 +63,12 @@ do
     java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.xml"
 
     echo "Arreglant resultats... $filename"
-    python $tohtml -i "${filename}-lt.xml" -o $results_dir/"${fbname}-lt.html"
+    python $tohtml -i "${filename}-lt.xml" -o $results_dir/"${fbname}body-lt.html"
 
+    cat header.html $results_dir/"${fbname}body-lt.html" footer.html > $results_dir/"${fbname}-lt.html"
+
+    rm $results_dir/"${fbname}body-lt.html"
     rm "${filename}-plain.txt"
     rm "${filename}-lt.xml"
-    rm "${filename}.html"
+    rm "$origin_dir/${fbname}.html"
 done
