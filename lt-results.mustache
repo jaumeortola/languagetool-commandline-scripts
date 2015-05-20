@@ -25,6 +25,6 @@
 <hr/><b>Missatge:</b> {{msg}}<br/>
 {{#replacements}}<b>Suggeriments:</b> {{replacements}}<br/>{{/replacements}}
 {{#url}}<a href="{{url}}" target="_blank">Més informació</a><br/>{{/url}}
-<p>{{{context}}}</p>
+<p>{{context_before}}<span class="{{context_spanclass}}">{{context_error}}</span>{{context_after}}</p>
 {{/rule_matches}}
 {{/rulelist}}

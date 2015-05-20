@@ -40,7 +40,10 @@ class rule_match(object):
          spanclass = "hiddenSpellError"
       if (error.attrib['locqualityissuetype'] == "style") or (error.attrib['locqualityissuetype'] == "locale-violation"):
          spanclass = "hiddenGreenError"
-      self.context = ctx[0:a]+"<span class=\""+spanclass+"\">"+ctx[a:b]+"</span>"+ctx[b:ctxlen]
+      self.context_before = ctx[0:a]
+      self.context_spanclass = spanclass
+      self.context_error = ctx[a:b]
+      self.context_after = ctx[b:ctxlen]
       try:
          self.url = error.attrib['url']
       except KeyError:
