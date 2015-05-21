@@ -68,7 +68,7 @@ _digits = re.compile('\d')
 def contains_digits(d):
     return bool(_digits.search(d))
 
-_noletter = re.compile(ur'[^a-zA-ZûêàéèíòóúïüäöîâÄÖÀÈÉÍÒÓÚÏÜÎÂçÇñÑ·]', re.UNICODE)
+_noletter = re.compile(ur'[^a-zA-ZûêáàéèíòóúïüäöîâÄÖÁÀÈÉÍÒÓÚÏÜÎÂçÇñÑ·]', re.UNICODE)
 def contains_symbols(d):
     return bool(_noletter.search(d))
 
