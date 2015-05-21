@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 import sys, getopt, operator, pystache, os.path, uuid, cgi, re, hunspell
 
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def process_template(template, filename, ctx):
-    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
     # Load template and process it.
     template = open(os.path.join(__location__, template), 'r').read()
@@ -119,13 +119,17 @@ def process_file ( ifile, ofile ):
    #   pass
    unknownwords.sort()
 
-   hobj = hunspell.HunSpell('/usr/share/hunspell/en_US.dic', '/usr/share/hunspell/en_US.aff')
+   hobjEnglish = hunspell.HunSpell(os.path.join(__location__, "hunspell", "en_US.dic"), os.path.join(__location__, "hunspell", "en_US.aff"))
+   hobjSpanish = hunspell.HunSpell(os.path.join(__location__, "hunspell", "es_ANY.dic"), os.path.join(__location__, "hunspell", "es_ANY.aff"))
+   hobjFrench = hunspell.HunSpell(os.path.join(__location__, "hunspell", "fr-toutesvariantes.dic"), os.path.join(__location__, "hunspell", "fr-toutesvariantes.aff"))
    uw_oneletter = []
    uw_digit = []
    uw_symbol = []
    uw_allupper = []
    uw_camel = []
    uw_english = []
+   uw_spanish = []
+   uw_french = []
    uw_firstupper = []
    uw_rest = []
    for uw in unknownwords:
@@ -135,9 +139,15 @@ def process_file ( ifile, ofile ):
       elif len(uw)==1:
          if uw not in uw_oneletter:
             uw_oneletter.append(uw)
-      elif hobj.spell(uw):
+      elif hobjEnglish.spell(uw):
          if uw not in uw_english:
             uw_english.append(uw)
+      elif hobjSpanish.spell(uw):
+         if uw not in uw_spanish:
+            uw_spanish.append(uw)
+      elif hobjFrench.spell(uw):
+         if uw not in uw_french:
+            uw_french.append(uw)
       elif contains_digits(uw):
          if uw not in uw_digit:
             uw_digit.append(uw)
@@ -165,6 +175,8 @@ def process_file ( ifile, ofile ):
        'uw_allupper': uw_allupper,
        'uw_camel': uw_camel,
        'uw_english': uw_english,
+       'uw_spanish': uw_spanish,
+       'uw_french': uw_french,
        'uw_firstupper': uw_firstupper,
        'uw_rest': uw_rest,
        'has_uw_oneletter': len(uw_oneletter),
@@ -173,6 +185,8 @@ def process_file ( ifile, ofile ):
        'has_uw_allupper': len(uw_allupper),
        'has_uw_camel': len(uw_camel),
        'has_uw_english': len(uw_english),
+       'has_uw_spanish': len(uw_spanish),
+       'has_uw_french': len(uw_french),
        'has_uw_firstupper': len(uw_firstupper),
        'has_uw_rest': len(uw_rest),
        'uuid': uuid.uuid4(),
