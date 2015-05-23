@@ -79,6 +79,20 @@ def is_camel(s):
     return (s != s.lower() and s != s.upper() and not is_firstupper(s))
 
 def process_file ( ifile, ofile ):
+   hobjEnglish = hunspell.HunSpell(os.path.join(__location__, "hunspell", "en_US.dic"), os.path.join(__location__, "hunspell", "en_US.aff"))
+   hobjSpanish = hunspell.HunSpell(os.path.join(__location__, "hunspell", "es_ANY.dic"), os.path.join(__location__, "hunspell", "es_ANY.aff"))
+   hobjFrench = hunspell.HunSpell(os.path.join(__location__, "hunspell", "fr-toutesvariantes.dic"), os.path.join(__location__, "hunspell", "fr-toutesvariantes.aff"))
+   uw_oneletter = []
+   uw_digit = []
+   uw_symbol = []
+   uw_allupper = []
+   uw_camel = []
+   uw_english = []
+   uw_spanish = []
+   uw_french = []
+   uw_firstupper = []
+   uw_rest = []
+
    # parxe xml
    import xml.etree.ElementTree as ET
    tree = ET.parse(ifile)
@@ -104,9 +118,39 @@ def process_file ( ifile, ofile ):
       if ruleId == "MORFOLOGIK_RULE_CA_ES":
          a = int(error.attrib['contextoffset'])
          b = a + int(error.attrib['errorlength'])
-         wrongword = error.attrib['context'][a:b]
-         if wrongword not in unknownwords:
-            unknownwords.append(wrongword)
+         uw = error.attrib['context'][a:b]
+         if uw not in unknownwords:
+            unknownwords.append(uw)
+            if contains_symbols(uw):
+               if uw not in uw_symbol:
+                  uw_symbol.append(rule_match(error))
+            elif len(uw)==1:
+               if uw not in uw_oneletter:
+                  uw_oneletter.append(rule_match(error))
+            elif hobjEnglish.spell(uw):
+               if uw not in uw_english:
+                  uw_english.append(rule_match(error))
+            elif hobjSpanish.spell(uw):
+               if uw not in uw_spanish:
+                  uw_spanish.append(rule_match(error))
+            elif hobjFrench.spell(uw):
+               if uw not in uw_french:
+                  uw_french.append(rule_match(error))
+            elif contains_digits(uw):
+               if uw not in uw_digit:
+                  uw_digit.append(rule_match(error))
+            elif uw == uw.upper():
+               if uw not in uw_allupper:
+                  uw_allupper.append(rule_match(error))
+            elif is_camel(uw):
+               if uw not in uw_camel:
+                  uw_camel.append(rule_match(error))
+            elif is_firstupper(uw):
+               if uw not in uw_firstupper:
+                  uw_firstupper.append(rule_match(error))
+            elif uw not in uw_rest:
+               uw_rest.append(rule_match(error))
+
 
    # sort list of rules
    rulelist.sort(key=lambda x: x.count, reverse=True);
@@ -119,49 +163,6 @@ def process_file ( ifile, ofile ):
    #   pass
    unknownwords.sort()
 
-   hobjEnglish = hunspell.HunSpell(os.path.join(__location__, "hunspell", "en_US.dic"), os.path.join(__location__, "hunspell", "en_US.aff"))
-   hobjSpanish = hunspell.HunSpell(os.path.join(__location__, "hunspell", "es_ANY.dic"), os.path.join(__location__, "hunspell", "es_ANY.aff"))
-   hobjFrench = hunspell.HunSpell(os.path.join(__location__, "hunspell", "fr-toutesvariantes.dic"), os.path.join(__location__, "hunspell", "fr-toutesvariantes.aff"))
-   uw_oneletter = []
-   uw_digit = []
-   uw_symbol = []
-   uw_allupper = []
-   uw_camel = []
-   uw_english = []
-   uw_spanish = []
-   uw_french = []
-   uw_firstupper = []
-   uw_rest = []
-   for uw in unknownwords:
-      if contains_symbols(uw):
-         if uw not in uw_symbol:
-            uw_symbol.append(uw)
-      elif len(uw)==1:
-         if uw not in uw_oneletter:
-            uw_oneletter.append(uw)
-      elif hobjEnglish.spell(uw):
-         if uw not in uw_english:
-            uw_english.append(uw)
-      elif hobjSpanish.spell(uw):
-         if uw not in uw_spanish:
-            uw_spanish.append(uw)
-      elif hobjFrench.spell(uw):
-         if uw not in uw_french:
-            uw_french.append(uw)
-      elif contains_digits(uw):
-         if uw not in uw_digit:
-            uw_digit.append(uw)
-      elif uw == uw.upper():
-         if uw not in uw_allupper:
-            uw_allupper.append(uw)
-      elif is_camel(uw):
-         if uw not in uw_camel:
-            uw_camel.append(uw)
-      elif is_firstupper(uw):
-         if uw not in uw_firstupper:
-            uw_firstupper.append(uw)
-      elif uw not in uw_rest:
-         uw_rest.append(uw)
 
    ctx = {
        'filename': ifile,
