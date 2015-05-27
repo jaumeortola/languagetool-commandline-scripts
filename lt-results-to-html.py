@@ -162,7 +162,16 @@ def process_file ( ifile, ofile ):
    #except AttributeError:
    #   pass
    unknownwords.sort()
-
+   uw_oneletter.sort()
+   uw_digit.sort()
+   uw_symbol.sort()
+   uw_allupper.sort()
+   uw_camel.sort()
+   uw_english.sort()
+   uw_spanish.sort()
+   uw_french.sort()
+   uw_firstupper.sort()
+   uw_rest.sort()
 
    ctx = {
        'filename': ifile,
