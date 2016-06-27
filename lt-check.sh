@@ -4,7 +4,7 @@
 tikajar=/usr/share/tika/tika-app-1.7.jar
 #tohtml=/usr/share/tika/results-to-html.pl
 tohtml=lt-results-to-html.py
-lt_jar=~/lt/languagetool-commandline.jar
+lt_jar=~/target-lt/languagetool-commandline.jar
 origin_dir=original
 results_dir=results
 #lt_jar=/usr/share/lt/languagetool-commandline.jar
@@ -15,6 +15,13 @@ mkdir -p results
 langcode=ca-ES
 disabledRules=""
 enabledRules=""
+
+analysis=1
+
+if [ "$2" = "onlyconversion" ] ; then
+    analysis=0
+    echo "Only conversion to text!"
+fi
 
 #Universitat de València
 if [ "$1" = "uvalencia" ] ; then
@@ -32,6 +39,11 @@ fi
 if [ "$1" = "llibrevalencia" ] ; then
     langcode=ca-ES-valencia
     disabledRules="-d MORFOLOGIK_RULE_CA_ES,EVITA_DEMOSTRATIUS_EIXE"
+    enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,PRIORITZAR_COMETES"
+fi
+if [ "$1" = "levante" ] ; then
+    langcode=ca-ES-valencia
+    disabledRules="-d WHITESPACE_RULE"
     enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,PRIORITZAR_COMETES"
 fi
 #Memòries Softcatalà
@@ -59,16 +71,16 @@ do
 
     echo "Convertint a text pla... $filename"
     java -jar -Dfile.encoding=UTF-8 $tikajar -t "${filename}" > "${filename}-plain.txt"
-    echo "Analitzant amb LanguageTool.. $filename"
-    java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.xml"
+    if [ "$analysis" = 1 ] ; then
+	echo "Analitzant amb LanguageTool.. $filename"
+	java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.xml"
+	echo "Arreglant resultats... $filename"
+	python $tohtml -i "${filename}-lt.xml" -o $results_dir/"${fbname}body-lt.html"
+	cat header.html $results_dir/"${fbname}body-lt.html" footer.html > $results_dir/"${fbname}-lt.html"
+        rm "${filename}-plain.txt"
+	rm $results_dir/"${fbname}body-lt.html"
+	rm "${filename}-lt.xml"
+	rm "$origin_dir/${fbname}.html"
+    fi
 
-    echo "Arreglant resultats... $filename"
-    python $tohtml -i "${filename}-lt.xml" -o $results_dir/"${fbname}body-lt.html"
-
-    cat header.html $results_dir/"${fbname}body-lt.html" footer.html > $results_dir/"${fbname}-lt.html"
-
-    rm $results_dir/"${fbname}body-lt.html"
-    rm "${filename}-plain.txt"
-    rm "${filename}-lt.xml"
-    rm "$origin_dir/${fbname}.html"
 done
