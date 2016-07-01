@@ -1,0 +1,10 @@
+sed -i -r 's/í/í/g' *.txt 
+sed -i -r 's/é/é/g' *.txt 
+sed -i -r 's/à/à/g' *.txt 
+sed -i -r 's/ï/ï/g' *.txt 
+sed -i -r 's/è/è/g' *.txt 
+sed -i -r 's/ó/ó/g' *.txt 
+sed -i -r 's/ò/ò/g' *.txt 
+sed -i -r 's/ü/ü/g' *.txt 
+sed -i -r 's/ú/ú/g' *.txt 
+sed -i -r 's/ñ/ñ/g' *.txt 
