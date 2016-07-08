@@ -113,7 +113,7 @@ def process_file ( ifile, ofile ):
          else:
             r = rule(ruleId)
             rulelist.append(r)
-         if (r.count > 100):
+         if (r.count > 10000):
             r.truncated = 1
          else:
             r.rule_matches.append(rule_match(error))

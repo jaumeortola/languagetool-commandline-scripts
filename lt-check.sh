@@ -53,7 +53,15 @@ if [ "$1" = "softcatala" ] ; then
     enabledRules="-e EXIGEIX_PLURALS_S"
 fi
 
-lt_opt="-u -b -c utf-8 -l $langcode $disabledRules $enabledRules --api"
+#Test de poques regles
+if [ "$1" = "test" ] ; then
+    langcode=ca-ES
+    disabledRules="-eo"
+    enabledRules="-e CONFUSIONS_ACCENT"
+fi
+
+
+lt_opt="-u -b -c utf-8 -l $langcode $enabledRules $disabledRules --api"
 
 for filename in $origin_dir/*
 do
@@ -80,7 +88,6 @@ do
         rm "${filename}-plain.txt"
 	rm $results_dir/"${fbname}body-lt.html"
 	rm "${filename}-lt.xml"
-	rm "$origin_dir/${fbname}.html"
     fi
 
 done
