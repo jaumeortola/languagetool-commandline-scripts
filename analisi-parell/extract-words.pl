@@ -58,8 +58,8 @@ foreach (sort { ($words0{$b} <=> $words0{$a}) || ($a cmp $b) } keys %words0)
     my $wo = $_;
     if (!exists $words1{$wo}) {
 	print $ofh "$wo / $words0{$wo} -- 0\n";   
-    } elsif ($words0{$wo}/$len0 > $words1{$wo}*10/$len1) { #$words1{$wo} < 5) {
-	print $ofh "$wo / $words0{$wo} (".$words0{$wo}/$len0.") -- $words1{$wo} (".$words1{$wo}*10/$len1.")\n";   
+    } elsif ($words0{$wo}/$len0 > $words1{$wo}*5/$len1) { #$words1{$wo} < 5) {
+	print $ofh "$wo / $words0{$wo} (".$words0{$wo}/$len0.") -- $words1{$wo} (".$words1{$wo}*5/$len1.")\n";   
     }
 }
 
@@ -69,8 +69,8 @@ foreach (sort { ($words1{$b} <=> $words1{$a}) || ($a cmp $b) } keys %words1)
     my $wo = $_;
     if (!exists $words0{$wo}) {
 	print $ofh "$wo  / $words1{$wo} -- 0\n";   
-    } elsif ($words1{$wo}/$len1 > $words0{$wo}*10/$len0) { #($words0{$wo} < 5) {
-	print $ofh "$wo / $words1{$wo} (".$words1{$wo}/$len1.") -- $words0{$wo} (".$words0{$wo}*10/$len0.")\n";   
+    } elsif ($words1{$wo}/$len1 > $words0{$wo}*5/$len0) { #($words0{$wo} < 5) {
+	print $ofh "$wo / $words1{$wo} (".$words1{$wo}/$len1.") -- $words0{$wo} (".$words0{$wo}*5/$len0.")\n";   
     }
 
 }
