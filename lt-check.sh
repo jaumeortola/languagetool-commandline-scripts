@@ -57,7 +57,7 @@ fi
 if [ "$1" = "test" ] ; then
     langcode=ca-ES
     disabledRules="-eo"
-    enabledRules="-e CONFUSIONS_ACCENT"
+    enabledRules="-e $2"
 fi
 
 
