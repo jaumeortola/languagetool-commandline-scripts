@@ -18,7 +18,7 @@ enabledRules=""
 
 analysis=1
 
-if [ "$2" = "onlyconversion" ] ; then
+if [ "$1" = "txt" ] ; then  #only conversion to plain text
     analysis=0
     echo "Only conversion to text!"
 fi

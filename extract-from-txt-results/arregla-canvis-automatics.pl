@@ -19,6 +19,7 @@ while (my $line = <$fh>) {
     $line =~ s/l ·l/l·l/g;
     $line =~ s/l· l/l·l/g;
     $line =~ s/l · l/l·l/g;
+    $line =~ s/l•l/l·l/g;
 #######################
     $line =~ s/\bpaliatiu\b/pal·liatiu/g;
     $line =~ s/\bpaliatives\b/pal·liatives/g;
