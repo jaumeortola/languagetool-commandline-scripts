@@ -38,7 +38,7 @@ for (my $i=0; $i<=1; $i++) {
 	    } else {
 		$w = lc $w."*";
 	    }
-	    if ($w =~ /.../ && $w !~ /^(prejudicis?|perjudicis?|sens|\d+\*?)$/) {
+	    if ($w =~ /.../) { # && $w !~ /^(prejudicis?|perjudicis?|sens|\d+\*?)$/) {
 		if (exists $words{$w}) {
 		    $words{$w}[$i]++;
 		}
