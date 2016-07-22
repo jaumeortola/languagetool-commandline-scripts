@@ -1,16 +1,13 @@
 #!/bin/perl
 use utf8;
-binmode( STDOUT, ":utf8" );
+use strict;
+binmode(STDIN, ":utf8");
+binmode(STDOUT, ":utf8");
+binmode(STDERR, ":utf8");
 
-my $inputfilename = $ARGV[0];
-my $outputfilename = $ARGV[1];
-
-
-open( my $fh,  "<:encoding(UTF-8)", $inputfilename );
-open( my $ofh,  ">:encoding(UTF-8)", $outputfilename );
-
-
-while (my $line = <$fh>) {
+while (<STDIN>) {
+    chop;
+    my $line = $_;
 ##########################
     $line =~ s/\b([DdLlSsTtMm]['’]) +([Hh]?[aeiouAEIOUàáèéìíòóùúÀÁÈÉÌÍÒÓÙÚ])\b/$1$2/g;
     $line =~ s/([aeiouàèéíúòó]l)\.(l[aeiou])/$1·$2/g;
@@ -22,6 +19,12 @@ while (my $line = <$fh>) {
     $line =~ s/l•l/l·l/g;
     $line =~ s/­//g;   #soft hyphen
 #######################
+    # tabs and spaces
+    $text =~ s/\t/ /g;
+    $text =~ s/^\s+//g;
+    $text =~ s/\s+$//g;
+    $text =~ s/\s\s+$/ /g;
+#############################3
     $line =~ s/\bpaliatiu\b/pal·liatiu/g;
     $line =~ s/\bpaliatives\b/pal·liatives/g;
     $line =~ s/\breexit\b/reeixit/g;
@@ -7024,7 +7027,6 @@ while (my $line = <$fh>) {
     $line =~ s/\btermodifussions\b/termodifusions/g;
     $line =~ s/\btransfussions\b/transfusions/g;
     $line =~ s/\bvissions\b/visions/g;
-    print $ofh $line;
+
+    print $line."\n";
 }
-close($fh);
-close($ofh);
