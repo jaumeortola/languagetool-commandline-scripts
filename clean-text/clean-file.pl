@@ -540,7 +540,7 @@ while (<STDIN>) {
     $line =~ s/\bcoincideixen en què\b/coincideixen que/g;
     $line =~ s/\bcoincideixen en que\b/coincideixen que/g;
     $line =~ s/\bva coincidir en que\b/va coincidir que/g;
-    $line =~ s/\bvan coincidir en que\b/va coincidir que/g;
+    $line =~ s/\bvan coincidir en que\b/van coincidir que/g;
     $line =~ s/\bse centra en què\b/se centra en el fet que/g;
     $line =~ s/\binsisteix en què\b/insisteix que/g;
     $line =~ s/\binsisteix en que\b/insisteix que/g;
