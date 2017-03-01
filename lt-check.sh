@@ -3,7 +3,7 @@
 #Directories
 tikajar=/usr/share/tika/tika-app-1.7.jar
 #tohtml=/usr/share/tika/results-to-html.pl
-tohtml=lt-results-to-html.py
+tohtml=lt-json-to-html.py
 lt_jar=~/target-lt/languagetool-commandline.jar
 origin_dir=original
 results_dir=results
@@ -74,7 +74,7 @@ if [ "$1" = "test" ] ; then
 fi
 
 
-lt_opt="-u -b -c utf-8 -l $langcode $enabledRules $disabledRules --api"
+lt_opt="-b -c utf-8 -l $langcode $enabledRules $disabledRules --json"
 
 for filename in $origin_dir/*
 do
@@ -94,13 +94,12 @@ do
     java -jar -Dfile.encoding=UTF-8 $tikajar -t "${filename}" > "${filename}-plain.txt"
     if [ "$analysis" = 1 ] ; then
 	echo "Analitzant amb LanguageTool.. $filename"
-	java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.xml"
+	java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.json"
 	echo "Arreglant resultats... $filename"
-	python $tohtml -i "${filename}-lt.xml" -o $results_dir/"${fbname}body-lt.html"
+	python $tohtml -i "${filename}-lt.json" -o $results_dir/"${fbname}body-lt.html"
 	cat header.html $results_dir/"${fbname}body-lt.html" footer.html > $results_dir/"${fbname}-lt.html"
         rm "${filename}-plain.txt"
 	rm $results_dir/"${fbname}body-lt.html"
-	rm "${filename}-lt.xml"
+	rm "${filename}-lt.json"
     fi
-
 done
