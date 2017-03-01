@@ -159,12 +159,6 @@ def process_file ( ifile, ofile ):
    # sort list of rules
    rulelist.sort(key=lambda x: x.count, reverse=True);
 
-   # unknown words from xml
-   #try:
-   #   for word in root.find('unknown_words').findall('word'):
-   #      unknownwords.append(word.text)
-   #except AttributeError:
-   #   pass
    unknownwords.sort()
    uw_oneletter.sort(key=lambda x: x.context_error, reverse=False)
    uw_digit.sort(key=lambda x: x.context_error, reverse=False)
