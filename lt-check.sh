@@ -32,15 +32,28 @@ fi
 #Llibre per a impremta - català general
 if [ "$1" = "llibregeneral" ] ; then
     langcode=ca-ES
-    disabledRules="-d MORFOLOGIK_RULE_CA_ES"
+    #disabledRules="-d MORFOLOGIK_RULE_CA_ES"
     enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,EXIGEIX_PLURALS_S,PER_PER_A_INFINITIU,PRIORITZAR_COMETES"
 fi
+if [ "$1" = "gramatica" ] ; then
+    langcode=ca-ES
+    disabledRules="-d WHITESPACE_RULE,USA_COMA_DECIMALS,CA_SIMPLE_REPLACE,CA_UNPAIRED_BRACKETS"
+    enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,EXIGEIX_PLURALS_S,PER_PER_A_INFINITIU,PRIORITZAR_COMETES"
+fi
+
 #Llibre per a impremta - valencià
 if [ "$1" = "llibrevalencia" ] ; then
     langcode=ca-ES-valencia
     disabledRules="-d MORFOLOGIK_RULE_CA_ES,EVITA_DEMOSTRATIUS_EIXE"
     enabledRules="-e GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,PRIORITZAR_COMETES"
 fi
+#conselleria València
+if [ "$1" = "conselleria" ] ; then
+    langcode=ca-ES-valencia
+    disabledRules="-d MORFOLOGIK_RULE_CA_ES"
+    enabledRules="-e EVITA_DEMOSTRATIUS_EIXE,GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,PRIORITZAR_COMETES"
+fi
+
 if [ "$1" = "levante" ] ; then
     langcode=ca-ES-valencia
     disabledRules="-d WHITESPACE_RULE"
@@ -49,7 +62,7 @@ fi
 #Memòries Softcatalà
 if [ "$1" = "softcatala" ] ; then
     langcode=ca-ES
-    disabledRules="-d MORFOLOGIK_RULE_CA_ES,WHITESPACE_RULE,UPPERCASE_SENTENCE_START,CAMI_DE"
+    disabledRules="-d WHITESPACE_RULE,UPPERCASE_SENTENCE_START"
     enabledRules="-e EXIGEIX_PLURALS_S"
 fi
 

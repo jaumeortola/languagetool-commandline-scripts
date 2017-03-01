@@ -10,14 +10,14 @@ my %dict = ();
 my @len = (0,0);
 
 #read dictionary
-my $ltdictfile ='/home/jaume/github/catalan-dict-tools/resultats/lt/diccionari.txt';
+my $ltdictfile ='/mnt/mydata/github/catalan-dict-tools/resultats/lt/diccionari.txt';
 open( my $fh,  "<:encoding(UTF-8)", $ltdictfile );
 while (my $line = <$fh>) {
     chomp $line;
     if ($line =~ /(.+) (.+) (.+)/) {
 	if (!exists $dict{$1}) {
 	    $dict{$1}=$2;
-	    #print "$1 $2\n";
+#	    print "$1 $2\n";
 	}
     }
 }

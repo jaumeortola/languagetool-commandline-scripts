@@ -1,8 +1,9 @@
 #/bin/bash
 #corpus=~/lt/corpus
-corpus=/media/jaume/WD2011/commoncrawl
-grep -E "\b$1\b" $corpus/ca.*.txt > paragraphs_$1.txt
-grep -E "\b$2\b" $corpus/ca.*.txt > paragraphs_$2.txt
+#corpus=/media/jaume/WD2011/commoncrawl
+corpus=~/lt/corpus
+grep -E "\b$1\b" $corpus/*.txt > paragraphs_$1.txt
+grep -E "\b$2\b" $corpus/*.txt > paragraphs_$2.txt
 
 perl -CA extract-sentences-with-word.pl paragraphs_$1.txt sentences_$1.txt $1
 perl -CA extract-sentences-with-word.pl paragraphs_$2.txt sentences_$2.txt $2
