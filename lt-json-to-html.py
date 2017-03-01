@@ -49,7 +49,7 @@ class rule_match(object):
       self.context_error = cgi.escape(ctx[a:b]).replace(" ","&nbsp;")
       self.context_after = ctx[b:ctxlen]
       try:
-         self.url = error['urls'][0]
+         self.url = error['rule']['urls'][0]['value']
       except KeyError:
          self.url = ""
 
