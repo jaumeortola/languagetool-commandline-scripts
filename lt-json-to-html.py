@@ -34,10 +34,7 @@ class rule_match(object):
       a = int(error['context']['offset'])
       b = a + int(error['context']['length'])
       uw = error['context']['text'][a:b]
-
       ctx = error['context']['text']
-      a = int(error['context']['offset'])
-      b = a + int(error['context']['length'])
       ctxlen = len(ctx)
       spanclass = "hiddenGrammarError"
       if error['rule']['issueType'] == "misspelling":
