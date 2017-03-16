@@ -50,8 +50,8 @@ fi
 #conselleria València
 if [ "$1" = "conselleria" ] ; then
     langcode=ca-ES-valencia
-    disabledRules="-d MORFOLOGIK_RULE_CA_ES"
-    enabledRules="-e EVITA_DEMOSTRATIUS_EIXE,GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,PRIORITZAR_COMETES"
+    disabledRules="-d EVITA_INFINITIUS_INDRE,EVITA_INFINITIUS_VALDRE"
+    enabledRules="-e EXIGEIX_PLURALS_S,EXIGEIX_PLURALS_SCOS,EXIGEIX_PLURALS_JOS,EVITA_DEMOSTRATIUS_EIXE,GUIONET_GUIO,PUNTS_SUSPENSIUS,CA_UNPAIRED_QUESTION,PRIORITZAR_COMETES,EXIGEIX_INFINITIUS_INDRE,EXIGEIX_INFINITIUS_ALDRE,CA_UNPAIRED_QUESTION"
 fi
 
 if [ "$1" = "levante" ] ; then
@@ -94,6 +94,7 @@ do
     java -jar -Dfile.encoding=UTF-8 $tikajar -t "${filename}" > "${filename}-plain.txt"
     if [ "$analysis" = 1 ] ; then
 	echo "Analitzant amb LanguageTool.. $filename"
+	echo "java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt ${filename}-plain.txt > ${filename}-lt.json"
 	java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt "${filename}-plain.txt" > "${filename}-lt.json"
 	echo "Arreglant resultats... $filename"
 	python $tohtml -i "${filename}-lt.json" -o $results_dir/"${fbname}body-lt.html"
