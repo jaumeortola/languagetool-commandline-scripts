@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #Directories
-tikajar=/usr/share/tika/tika-app-1.7.jar
+tikajar=/usr/share/tika/tika-app-1.16.jar
+#tika-app-1.7.jar
 #tohtml=/usr/share/tika/results-to-html.pl
 tohtml=lt-json-to-html.py
 lt_jar=~/target-lt/languagetool-commandline.jar
@@ -98,7 +99,7 @@ do
     fi
 
     echo "Convertint a text pla... $filename"
-    java -jar -Dfile.encoding=UTF-8 $tikajar -t "${filename}" > "${filename}-plain.txt"
+    java -jar -Dfile.encoding=UTF-8 $tikajar -T "${filename}" > "${filename}-plain.txt"
     if [ "$analysis" = 1 ] ; then
 	echo "Analitzant amb LanguageTool.. $filename"
 	echo "java -jar -Dfile.encoding=UTF-8 $lt_jar $lt_opt ${filename}-plain.txt > ${filename}-lt.json"

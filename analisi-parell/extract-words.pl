@@ -10,7 +10,7 @@ my %dict = ();
 my @len = (0,0);
 
 #read dictionary
-my $ltdictfile ='/mnt/mydata/github/catalan-dict-tools/resultats/lt/diccionari.txt';
+my $ltdictfile ='/home/ec2-user/github/catalan-dict-tools/resultats/lt/diccionari.txt';
 open( my $fh,  "<:encoding(UTF-8)", $ltdictfile );
 while (my $line = <$fh>) {
     chomp $line;
