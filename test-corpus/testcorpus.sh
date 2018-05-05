@@ -86,8 +86,7 @@ sudo cp -R "$targetDir/$date" /var/www/html/rr/tests/
 
 
 
-sudo aws sns publish --topic-arn arn:aws:sns:us-west-2:030392386923:WebsTirant --message "$missatge" --subject "Tests LT"
 echo "FET EN:"
 date
-#google-chrome $targetDir/$date
+
 
