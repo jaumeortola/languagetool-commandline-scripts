@@ -15,7 +15,7 @@ my $sentence = "";
 
 while (my $line = <$fh>) {
     chomp $line;
-    if ($line =~ /([^.:!?]*\b($word)\b.*?\.)/) {
+    if ($line =~ /([^.:!?]*\b($word)\b[^.:!?]*)/) {
 	print $ofh "$1\n";
     }
 }

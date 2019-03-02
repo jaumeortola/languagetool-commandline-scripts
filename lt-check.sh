@@ -82,7 +82,7 @@ if [ "$1" = "test" ] ; then
 fi
 
 
-lt_opt="-b -c utf-8 -l $langcode $enabledRules $disabledRules --json"
+lt_opt="-b -c utf-8 -l $langcode $enabledRules $disabledRules -u" # --json"
 
 for filename in $origin_dir/*
 do
